@@ -1,44 +1,35 @@
+// Описан в документации
+import SimpleLightbox from "simplelightbox";
+// Дополнительный импорт стилей
+import "simplelightbox/dist/simple-lightbox.min.css";
+
 // Add imports above this line
 import { galleryItems } from './gallery-items';
 // Change code below this line
 
-const galleryContainer = document.querySelector('.gallery')
-// console.log(galleryContainer)
-const itemsMarkup = createGalleryItems(galleryItems)
-// console.log(galleryItems)
-galleryContainer.insertAdjacentHTML('beforeend', itemsMarkup)
-// console.log(createGalleryItems(galleryItems))
 
-// 3.
-galleryContainer.addEventListener('click', onGalleryContainerClick)
+const galleryEl = document.querySelector('.gallery');
+const markupGallery = createGalleryItemsMarkup(galleryItems);
+galleryEl.insertAdjacentHTML("beforeend", markupGallery);
 
+galleryEl.addEventListener('click', targetClickHandler);
 
-// 1. создание разметки в JS
-function createGalleryItems(galleryItems) {
-  return galleryItems.map(item => {
-    return `
-  <div class="gallery__item">
-    <a class="gallery__link" href="${item.preview}">
-      <img
-        class="gallery__image"
-        src="${item.preview}"
-        data-source="${item.original}"
-        alt="${item.description}"
-      />
-    </a>
-  </div>
-`;
-  }).join('');
+function targetClickHandler(event) {
+    event.preventDefault();
 }
+let lightbox = new SimpleLightbox('.gallery a', {
+  captionsData:   'alt',
+  captionPosition: 'bottom',
+  captionDelay: 250,
+});
 
-function onGalleryContainerClick(evt) {
-  evt.preventDefault()
-  if (evt.target.tagName !== 'IMG') {
-    return
-  }
-const instance = basicLightbox.create(`
-    <img src="${evt.target.dataset.source}" width="800" height="600">
-`)
-  instance.show()
-  // console.log(evt.target)
+function createGalleryItemsMarkup(items) {
+  const galleryItemsMarkup = items.map(({ preview, original, description }) => `<a class="gallery__item" href='${original}'>
+    <img class='gallery__image'
+    src='${preview}'
+    alt='${description}'
+    />
+    </a>`
+  ).join('');
+  return galleryItemsMarkup;
 }
