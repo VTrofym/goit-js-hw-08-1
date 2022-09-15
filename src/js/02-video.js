@@ -22,7 +22,7 @@ function newStart() {
     player
       .setCurrentTime(currentVideoTime)
     .then(() => {
-    player.play()
+    // player.play()
   })
     .catch (function(error) {
       switch (error.name) {
@@ -33,6 +33,7 @@ function newStart() {
       }
     })
 }
+
 
 
 
